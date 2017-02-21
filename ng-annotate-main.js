@@ -49,6 +49,7 @@ function matchMaterialShowModalOpen(node) {
     // $mdToast.show({.. controller: fn, resolve: {f: function($scope) {}, ..}});
     // $mdBottomSheet.show({.. controller: fn, resolve: {f: function($scope) {}, ..}});
     // $modal.open({.. controller: fn, resolve: {f: function($scope) {}, ..}});
+    // $mdPanel.open({.. controller: fn, resolve: {f: function($scope) {}, ..}});
 
     // we already know that node is a (non-computed) method call
     const callee = node.callee;
@@ -57,7 +58,7 @@ function matchMaterialShowModalOpen(node) {
     const args = node.arguments;
 
     if (obj.type === "Identifier" &&
-        ((is.someof(obj.name, ["$modal", "$uibModal"]) && method.name === "open") || (is.someof(obj.name, ["$mdDialog", "$mdToast", "$mdBottomSheet"]) && method.name === "show")) &&
+        ((is.someof(obj.name, ["$modal", "$uibModal", "$mdPanel"]) && method.name === "open") || (is.someof(obj.name, ["$mdDialog", "$mdToast", "$mdBottomSheet"]) && method.name === "show")) &&
         args.length === 1 && args[0].type === "ObjectExpression") {
         const props = args[0].properties;
         const res = [matchProp("controller", props)];
